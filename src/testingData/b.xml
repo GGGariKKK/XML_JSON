@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<catalog>
+      <book>
+            <author>Gambardella, Matthew</author>
+            <price>44.95</price>
+            <genre>Computer</genre>
+            <description>An in-depth look at creating applications with XML.</description>
+            <id>bk101</id>
+      <title>XML Developer's Guide</title>
+      <publish_date>2000-10-01</publish_date>
+      </book>
+      <book>
+      <author>Ralls, Kim</author>
+            <price>5.95</price>
+            <genre>Fantasy</genre>
+            <description>A former architect battles corporate zombies, an evil sorceress, and her own childhood to become queen of the world.</description>
+            <id>bk102</id>
+            <title>Midnight Rain</title>
+            <publish_date>2000-12-16</publish_date>
+      </book>
+      <book>
+            <author>Corets, Eva</author>
+            <price>5.95</price>
+            <genre>Fantasy</genre>
+            <description>After the collapse of a nanotechnology society in England, the young survivors lay the foundation for a new society.</description><id>bk103</id>
+            <title>Maeve Ascendant</title>
+            <publish_date>2000-11-17</publish_date>
+      </book>
+      <book>
+            <author>Corets, Eva</author>
+            <price>5.95</price>
+            <genre>Fantasy</genre>
+            <description>In post-apocalypse England, the mysterious agent known only as Oberon helps to create a new life for the inhabitants of London. Sequel to Maeve Ascendant.</description>
+            <id>bk104</id>
+            <title>Oberon's Legacy</title>
+            <publish_date>2001-03-10</publish_date>
+      </book>
+</catalog>

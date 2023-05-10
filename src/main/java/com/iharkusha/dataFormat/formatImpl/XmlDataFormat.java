@@ -23,7 +23,6 @@ public class XmlDataFormat extends DataFormat {
         this.originalData = data;
         JSONObject jsonObject = new JSONObject();
         try {
-            data = "<?xml version=\"1.0\" encoding=\"UTF-8\"?>\n" + data;
             DocumentBuilderFactory factory = DocumentBuilderFactory.newInstance();
             DocumentBuilder builder = factory.newDocumentBuilder();
             InputSource inputSource = new InputSource(new StringReader(data));
@@ -40,7 +39,7 @@ public class XmlDataFormat extends DataFormat {
             }
             hasChildNodes(jsonObject, root.hasChildNodes(), root.getChildNodes());
         } catch (ParserConfigurationException | IOException | SAXException e) {
-            // e.printStackTrace();
+             e.printStackTrace();
         }
         System.out.println(jsonObject);
     }
@@ -76,8 +75,6 @@ public class XmlDataFormat extends DataFormat {
     private void parseChild(Node node, JSONObject jsonObject) {
         hasChildNodes(jsonObject, node.hasChildNodes(), node.getChildNodes());
     }
-
-
 
     @Override
     public String render(String data) {

@@ -1,10 +1,10 @@
 package com.iharkusha.dataFormat.formatImpl;
 
 import com.iharkusha.dataFormat.DataFormat;
-import com.iharkusha.validation.ValidatorVisitor;
 import com.iharkusha.json.JsonArray;
 import com.iharkusha.json.JsonObject;
 import com.iharkusha.json.JsonString;
+import com.iharkusha.validation.ValidatorVisitor;
 import org.w3c.dom.*;
 import org.xml.sax.InputSource;
 import org.xml.sax.SAXException;
@@ -20,7 +20,7 @@ import java.io.StringReader;
 public class JsonDataFormat extends DataFormat {
 
     private String originalData;
-    private JsonObject jsonObject;
+    private JsonObject parsedObject;
 
     public void parse(String data) {
         this.originalData = data;
@@ -46,7 +46,7 @@ public class JsonDataFormat extends DataFormat {
                     builderObj.add(element.getNodeName(), objBuilder.build());
                 }
             }
-            jsonObject = builderObj.build();
+            parsedObject = builderObj.build();
         } catch (Exception e) {
             e.printStackTrace();
         }
@@ -56,16 +56,13 @@ public class JsonDataFormat extends DataFormat {
     @Override
     public String render(String data) {
         try {
-            // Створення парсера для XML
             DocumentBuilderFactory factory = DocumentBuilderFactory.newInstance();
             DocumentBuilder builder = factory.newDocumentBuilder();
 
-            // Перетворення XML у структуру дерева об'єктів
             ByteArrayInputStream input = new ByteArrayInputStream(data.getBytes());
             Document doc = builder.parse(input);
             Element root = doc.getDocumentElement();
 
-            // Перетворення дерева об'єктів у JSON об'єкти
             JsonArray jsonArray = new JsonArray();
             NodeList nodeList = root.getChildNodes();
             for (int i = 0; i < nodeList.getLength(); i++) {
@@ -87,10 +84,7 @@ public class JsonDataFormat extends DataFormat {
                     jsonArray.add(json);
                 }
             }
-
-            // Повернення JSON даних у вигляді рядка
             return jsonArray.toJsonString();
-
         } catch (ParserConfigurationException | SAXException | IOException e) {
             e.printStackTrace();
         }

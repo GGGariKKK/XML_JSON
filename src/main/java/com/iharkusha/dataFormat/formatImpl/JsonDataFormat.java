@@ -2,11 +2,10 @@ package com.iharkusha.dataFormat.formatImpl;
 
 import com.iharkusha.dataFormat.DataFormat;
 import com.iharkusha.json.JsonArray;
+import com.iharkusha.json.JsonElement;
 import com.iharkusha.json.JsonObject;
-import com.iharkusha.json.JsonString;
 import com.iharkusha.validation.ValidatorVisitor;
 import org.w3c.dom.*;
-import org.xml.sax.InputSource;
 import org.xml.sax.SAXException;
 
 import javax.xml.parsers.DocumentBuilder;
@@ -14,47 +13,15 @@ import javax.xml.parsers.DocumentBuilderFactory;
 import javax.xml.parsers.ParserConfigurationException;
 import java.io.ByteArrayInputStream;
 import java.io.IOException;
-import java.io.StringReader;
 
 
 public class JsonDataFormat extends DataFormat {
 
     private String originalData;
-    private JsonObject parsedObject;
+    private JsonElement parsedElement;
 
-    public void parse(String data) {
+    public void parse(String data){
         this.originalData = data;
-        try {
-            DocumentBuilderFactory factory = DocumentBuilderFactory.newInstance();
-            DocumentBuilder builder = factory.newDocumentBuilder();
-            InputSource is = new InputSource(new StringReader(data));
-            Document doc = builder.parse(is);
-            NodeList nodes = doc.getElementsByTagName("*");
-            JsonObject.Builder builderObj = new JsonObject.Builder();
-            for (int i = 0; i < nodes.getLength(); i++) {
-                Element element = (Element) nodes.item(i);
-                if (element.getChildNodes().getLength() == 1) {
-                    builderObj.add(element.getNodeName(), element.getTextContent());
-                } else {
-                    JsonObject.Builder objBuilder = new JsonObject.Builder();
-                    for (int j = 0; j < element.getChildNodes().getLength(); j++) {
-                        Node child = element.getChildNodes().item(j);
-                        if (child.getNodeType() == Node.ELEMENT_NODE) {
-                            objBuilder.add(child.getNodeName(), child.getTextContent());
-                        }
-                    }
-                    builderObj.add(element.getNodeName(), objBuilder.build());
-                }
-            }
-            parsedObject = builderObj.build();
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-    }
-
-
-    @Override
-    public String render(String data) {
         try {
             DocumentBuilderFactory factory = DocumentBuilderFactory.newInstance();
             DocumentBuilder builder = factory.newDocumentBuilder();
@@ -68,27 +35,31 @@ public class JsonDataFormat extends DataFormat {
             for (int i = 0; i < nodeList.getLength(); i++) {
                 Node node = nodeList.item(i);
                 if (node instanceof Element element) {
-                    JsonObject json = new JsonObject();
+                    JsonObject.Builder jsonBuilder = new JsonObject.Builder();
                     NamedNodeMap attributes = element.getAttributes();
                     for (int j = 0; j < attributes.getLength(); j++) {
                         Node attribute = attributes.item(j);
-                        json.add(new JsonString(attribute.getNodeName(), attribute.getNodeValue()));
+                        jsonBuilder.add(attribute.getNodeName(), attribute.getNodeValue());
                     }
                     NodeList childNodes = element.getChildNodes();
                     for (int j = 0; j < childNodes.getLength(); j++) {
                         Node childNode = childNodes.item(j);
                         if (childNode instanceof Element childElement) {
-                            json.add(new JsonString(childElement.getTagName(), childElement.getTextContent()));
+                            jsonBuilder.add(childElement.getTagName(), childElement.getTextContent());
                         }
                     }
-                    jsonArray.add(json);
+                    jsonArray.add(jsonBuilder.build());
                 }
             }
-            return jsonArray.toJsonString();
+            parsedElement = jsonArray;
         } catch (ParserConfigurationException | SAXException | IOException e) {
             e.printStackTrace();
         }
-        return null;
+    }
+
+    @Override
+    public String render() {
+        return "{ \"root\":" + parsedElement.toJsonString() + "}";
     }
 
     @Override
@@ -100,6 +71,4 @@ public class JsonDataFormat extends DataFormat {
     public void accept(ValidatorVisitor visitor) {
         visitor.visit(this);
     }
-
-
 }

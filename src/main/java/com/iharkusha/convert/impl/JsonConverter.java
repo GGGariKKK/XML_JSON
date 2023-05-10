@@ -13,7 +13,6 @@ import java.io.IOException;
 public class JsonConverter extends Converter {
 
     public JsonConverter(DataFormatFactory dataFormatFactory, ValidatorVisitor validatorVisitor) {
-
         super(dataFormatFactory, validatorVisitor);
     }
 
@@ -24,7 +23,7 @@ public class JsonConverter extends Converter {
 
     @Override
     protected String renderData(DataFormat dataFormat) throws TransformerException {
-        return dataFormat.render(dataFormat.getOriginalData());
+        return dataFormat.render();
     }
 }
 

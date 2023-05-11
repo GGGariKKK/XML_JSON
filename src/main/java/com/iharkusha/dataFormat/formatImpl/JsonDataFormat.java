@@ -13,14 +13,19 @@ import javax.xml.parsers.DocumentBuilderFactory;
 import javax.xml.parsers.ParserConfigurationException;
 import java.io.ByteArrayInputStream;
 import java.io.IOException;
+import java.nio.charset.Charset;
 
 
-public class JsonDataFormat implements DataFormat {
+public class JsonDataFormat extends DataFormat {
 
     private String originalData;
     private JsonElement parsedElement;
 
-    public void parse(String data){
+    public JsonDataFormat(Charset encoding) {
+        super(encoding);
+    }
+
+    public void parse(String data) {
         this.originalData = data;
         try {
             DocumentBuilderFactory factory = DocumentBuilderFactory.newInstance();
@@ -59,12 +64,7 @@ public class JsonDataFormat implements DataFormat {
 
     @Override
     public String render() {
-        return "{ \"root\":" + parsedElement.toJsonString() + "}";
-    }
-
-    @Override
-    public String getOriginalData() {
-        return originalData;
+        return new String(("{ \"root\":" + parsedElement.toJsonString() + "}").getBytes(), getEncoding());
     }
 
     @Override

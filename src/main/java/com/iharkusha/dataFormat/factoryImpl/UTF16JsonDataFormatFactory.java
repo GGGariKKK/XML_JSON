@@ -6,10 +6,9 @@ import com.iharkusha.dataFormat.formatImpl.JsonDataFormat;
 
 import java.nio.charset.StandardCharsets;
 
-public class JsonDataFormatFactory implements DataFormatFactory {
+public class UTF16JsonDataFormatFactory implements DataFormatFactory {
     @Override
     public DataFormat createDataFormat() {
-        return new JsonDataFormat(StandardCharsets.UTF_8);
+        return new JsonDataFormat(StandardCharsets.UTF_16);
     }
 }
-

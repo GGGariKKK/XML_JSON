@@ -6,11 +6,17 @@ import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.nio.charset.Charset;
 import java.util.Iterator;
 
-public class XmlDataFormat implements DataFormat {
+public class XmlDataFormat extends DataFormat {
     private String originalData;
     private String parsed;
+
+    public XmlDataFormat(Charset encoding) {
+        super(encoding);
+    }
+
     @Override
     public void parse(String data) {
         originalData = data;
@@ -57,15 +63,10 @@ public class XmlDataFormat implements DataFormat {
 
     @Override
     public String render() {
-        return "<?xml version=\"1.0\" encoding=\"UTF-8\"?>" +
+        return new String(("<?xml version=\"1.0\" encoding=\"UTF-8\"?>" +
                 "<root>" +
                 parsed
-                + "</root>";
-    }
-
-    @Override
-    public String getOriginalData() {
-        return originalData;
+                + "</root>").getBytes(), getEncoding());
     }
 
     @Override

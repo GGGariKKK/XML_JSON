@@ -1,7 +1,7 @@
 package com.iharkusha.dataFormat.formatImpl;
 
 import com.iharkusha.dataFormat.DataFormat;
-import com.iharkusha.validation.ConverterExtension;
+import com.iharkusha.validation.DataFormatExtension;
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -70,7 +70,7 @@ public class XmlDataFormat extends DataFormat {
     }
 
     @Override
-    public void accept(ConverterExtension visitor) {
-        visitor.action(this);
+    public void accept(DataFormatExtension extension) {
+        extension.action(this);
     }
 }

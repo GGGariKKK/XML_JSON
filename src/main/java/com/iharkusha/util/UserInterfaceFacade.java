@@ -10,7 +10,7 @@ import com.iharkusha.dataFormat.factoryImpl.UTF16XmlDataFormatFactory;
 import com.iharkusha.dataFormat.factoryImpl.XmlDataFormatFactory;
 import com.iharkusha.util.menu_mini_framework.Menu;
 import com.iharkusha.util.menu_mini_framework.MenuItem;
-import com.iharkusha.validation.ConverterExtension;
+import com.iharkusha.validation.DataFormatExtension;
 import com.iharkusha.validation.FormatValidator;
 import org.xml.sax.SAXException;
 
@@ -23,7 +23,7 @@ import java.util.Scanner;
 
 public class UserInterfaceFacade {
     private final Scanner scanner = new Scanner(System.in);
-    private final ConverterExtension defaultFormatValidator = new FormatValidator();
+    private final DataFormatExtension defaultFormatValidator = new FormatValidator();
     private String inputFilePath;
     private String outputFilePath;
     private Charset outputEncoding;

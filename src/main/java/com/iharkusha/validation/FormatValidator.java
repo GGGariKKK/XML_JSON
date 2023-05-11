@@ -11,7 +11,7 @@ import javax.xml.parsers.DocumentBuilder;
 import javax.xml.parsers.DocumentBuilderFactory;
 import java.io.ByteArrayInputStream;
 
-public class FormatValidator implements ConverterExtension {
+public class FormatValidator implements DataFormatExtension {
 
     @Override
     public void action(JsonDataFormat jsonDataFormat) {

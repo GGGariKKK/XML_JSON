@@ -4,7 +4,7 @@ import com.iharkusha.dataFormat.DataFormat;
 import com.iharkusha.json.JsonArray;
 import com.iharkusha.json.JsonElement;
 import com.iharkusha.json.JsonObject;
-import com.iharkusha.validation.ConverterExtension;
+import com.iharkusha.validation.DataFormatExtension;
 import org.w3c.dom.*;
 import org.xml.sax.SAXException;
 
@@ -68,7 +68,7 @@ public class JsonDataFormat extends DataFormat {
     }
 
     @Override
-    public void accept(ConverterExtension converterExtension) {
-        converterExtension.action(this);
+    public void accept(DataFormatExtension extension) {
+        extension.action(this);
     }
 }

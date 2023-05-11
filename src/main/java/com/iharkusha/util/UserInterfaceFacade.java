@@ -5,11 +5,11 @@ import com.iharkusha.convert.impl.JsonConverter;
 import com.iharkusha.convert.impl.XmlConverter;
 import com.iharkusha.dataFormat.factoryImpl.JsonDataFormatFactory;
 import com.iharkusha.dataFormat.factoryImpl.XmlDataFormatFactory;
-import org.xml.sax.SAXException;
 import com.iharkusha.util.menu_mini_framework.Menu;
 import com.iharkusha.util.menu_mini_framework.MenuItem;
-import com.iharkusha.validation.DataFormatValidatorVisitor;
-import com.iharkusha.validation.ValidatorVisitor;
+import com.iharkusha.validation.ConverterExtension;
+import com.iharkusha.validation.FormatValidator;
+import org.xml.sax.SAXException;
 
 import javax.xml.parsers.ParserConfigurationException;
 import javax.xml.transform.TransformerException;
@@ -18,7 +18,7 @@ import java.util.Scanner;
 
 public class UserInterfaceFacade {
     private final Scanner scanner = new Scanner(System.in);
-    private final ValidatorVisitor defaultFormatValidator = new DataFormatValidatorVisitor();
+    private final ConverterExtension defaultFormatValidator = new FormatValidator();
     private String inputFilePath;
     private String outputFilePath;
 
@@ -76,7 +76,7 @@ public class UserInterfaceFacade {
             }
             return inputData.toString();
         } catch (IOException e) {
-            System.out.println("Помилка: " + e.getMessage());
+            System.out.println("Error during reading file: " + e.getMessage());
         }
         return null;
     }

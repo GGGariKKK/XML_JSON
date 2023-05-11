@@ -2,7 +2,7 @@ package com.iharkusha.convert;
 
 import com.iharkusha.dataFormat.DataFormat;
 import com.iharkusha.dataFormat.DataFormatFactory;
-import com.iharkusha.validation.ValidatorVisitor;
+import com.iharkusha.validation.ConverterExtension;
 import org.xml.sax.SAXException;
 
 import javax.xml.parsers.ParserConfigurationException;
@@ -11,17 +11,17 @@ import java.io.IOException;
 
 public abstract class Converter {
     protected DataFormatFactory dataFormatFactory;
-    private ValidatorVisitor validatorVisitor;
+    private ConverterExtension converterExtension;
 
-    protected Converter(DataFormatFactory dataFormatFactory, ValidatorVisitor validator) {
-        this.validatorVisitor = validator;
+    protected Converter(DataFormatFactory dataFormatFactory, ConverterExtension validator) {
+        this.converterExtension = validator;
         this.dataFormatFactory = dataFormatFactory;
     }
 
     public final String convert(String data) throws ParserConfigurationException, IOException, SAXException, TransformerException {
         DataFormat dataFormat = dataFormatFactory.createDataFormat();
         parseData(dataFormat, data);
-        dataFormat.accept(validatorVisitor);
+        dataFormat.accept(converterExtension);
         return renderData(dataFormat);
     }
 

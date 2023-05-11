@@ -1,14 +1,14 @@
 package com.iharkusha.dataFormat.formatImpl;
 
 import com.iharkusha.dataFormat.DataFormat;
-import com.iharkusha.validation.ValidatorVisitor;
+import com.iharkusha.validation.ConverterExtension;
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.util.Iterator;
 
-public class XmlDataFormat extends DataFormat {
+public class XmlDataFormat implements DataFormat {
     private String originalData;
     private String parsed;
     @Override
@@ -69,7 +69,7 @@ public class XmlDataFormat extends DataFormat {
     }
 
     @Override
-    public void accept(ValidatorVisitor visitor) {
-        visitor.visit(this);
+    public void accept(ConverterExtension visitor) {
+        visitor.action(this);
     }
 }

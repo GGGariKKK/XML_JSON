@@ -3,7 +3,7 @@ package com.iharkusha.convert.impl;
 import com.iharkusha.convert.Converter;
 import com.iharkusha.dataFormat.DataFormat;
 import com.iharkusha.dataFormat.DataFormatFactory;
-import com.iharkusha.validation.ValidatorVisitor;
+import com.iharkusha.validation.ConverterExtension;
 import org.xml.sax.SAXException;
 
 import javax.xml.parsers.ParserConfigurationException;
@@ -12,8 +12,8 @@ import java.io.IOException;
 
 public class JsonConverter extends Converter {
 
-    public JsonConverter(DataFormatFactory dataFormatFactory, ValidatorVisitor validatorVisitor) {
-        super(dataFormatFactory, validatorVisitor);
+    public JsonConverter(DataFormatFactory dataFormatFactory, ConverterExtension converterExtension) {
+        super(dataFormatFactory, converterExtension);
     }
 
     @Override

@@ -4,7 +4,7 @@ import com.iharkusha.dataFormat.DataFormat;
 import com.iharkusha.json.JsonArray;
 import com.iharkusha.json.JsonElement;
 import com.iharkusha.json.JsonObject;
-import com.iharkusha.validation.ValidatorVisitor;
+import com.iharkusha.validation.ConverterExtension;
 import org.w3c.dom.*;
 import org.xml.sax.SAXException;
 
@@ -15,7 +15,7 @@ import java.io.ByteArrayInputStream;
 import java.io.IOException;
 
 
-public class JsonDataFormat extends DataFormat {
+public class JsonDataFormat implements DataFormat {
 
     private String originalData;
     private JsonElement parsedElement;
@@ -68,7 +68,7 @@ public class JsonDataFormat extends DataFormat {
     }
 
     @Override
-    public void accept(ValidatorVisitor visitor) {
-        visitor.visit(this);
+    public void accept(ConverterExtension converterExtension) {
+        converterExtension.action(this);
     }
 }

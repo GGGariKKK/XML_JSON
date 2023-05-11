@@ -11,10 +11,10 @@ import javax.xml.parsers.DocumentBuilder;
 import javax.xml.parsers.DocumentBuilderFactory;
 import java.io.ByteArrayInputStream;
 
-public class DataFormatValidatorVisitor  implements ValidatorVisitor {
+public class FormatValidator implements ConverterExtension {
 
     @Override
-    public void visit(JsonDataFormat jsonDataFormat) {
+    public void action(JsonDataFormat jsonDataFormat) {
         String json = jsonDataFormat.render();
         try {
             new JSONObject(json);
@@ -26,7 +26,7 @@ public class DataFormatValidatorVisitor  implements ValidatorVisitor {
     }
 
     @Override
-    public void visit(XmlDataFormat xmlDataFormat) {
+    public void action(XmlDataFormat xmlDataFormat) {
         try {
             DocumentBuilderFactory factory = DocumentBuilderFactory.newInstance();
             DocumentBuilder builder = factory.newDocumentBuilder();

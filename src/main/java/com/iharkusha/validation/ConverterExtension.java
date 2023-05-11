@@ -3,7 +3,7 @@ package com.iharkusha.validation;
 import com.iharkusha.dataFormat.formatImpl.JsonDataFormat;
 import com.iharkusha.dataFormat.formatImpl.XmlDataFormat;
 
-public interface ValidatorVisitor {
-    void visit(JsonDataFormat jsonDataFormat);
-    void visit(XmlDataFormat xmlDataFormat);
+public interface ConverterExtension {
+    void action(JsonDataFormat jsonDataFormat);
+    void action(XmlDataFormat xmlDataFormat);
 }

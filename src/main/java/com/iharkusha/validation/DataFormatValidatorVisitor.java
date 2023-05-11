@@ -9,14 +9,15 @@ import org.w3c.dom.NodeList;
 
 import javax.xml.parsers.DocumentBuilder;
 import javax.xml.parsers.DocumentBuilderFactory;
+import java.io.ByteArrayInputStream;
 
 public class DataFormatValidatorVisitor  implements ValidatorVisitor {
 
     @Override
     public void visit(JsonDataFormat jsonDataFormat) {
-        String json = jsonDataFormat.getOriginalData();
+        String json = jsonDataFormat.render();
         try {
-            JSONObject jsonObj = new JSONObject(json);
+            new JSONObject(json);
             // If JSON object is created - no errors present
             System.out.println("JSON is valid");
         } catch (JSONException e) {
@@ -29,8 +30,7 @@ public class DataFormatValidatorVisitor  implements ValidatorVisitor {
         try {
             DocumentBuilderFactory factory = DocumentBuilderFactory.newInstance();
             DocumentBuilder builder = factory.newDocumentBuilder();
-            Document document = builder.parse(xmlDataFormat.getOriginalData());
-
+            Document document = builder.parse(new ByteArrayInputStream(xmlDataFormat.render().getBytes()));
             NodeList errorList = document.getElementsByTagName("parsererror");
             if (errorList.getLength() > 0) {
                 throw new IllegalArgumentException("XML not valid: " + errorList.item(0).getTextContent());
@@ -38,7 +38,7 @@ public class DataFormatValidatorVisitor  implements ValidatorVisitor {
                 System.out.println("XML is valid.");
             }
         } catch (Exception e) {
-//            System.err.println("Error validating XML: " + e.getMessage());
+            System.err.println("Error validating XML: " + e.getMessage());
         }
     }
 }

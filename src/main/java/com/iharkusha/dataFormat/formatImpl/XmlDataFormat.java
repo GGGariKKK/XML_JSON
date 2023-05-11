@@ -5,83 +5,18 @@ import com.iharkusha.validation.ValidatorVisitor;
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
-import org.w3c.dom.*;
-import org.xml.sax.InputSource;
-import org.xml.sax.SAXException;
 
-import javax.xml.parsers.DocumentBuilder;
-import javax.xml.parsers.DocumentBuilderFactory;
-import javax.xml.parsers.ParserConfigurationException;
-import java.io.IOException;
-import java.io.StringReader;
 import java.util.Iterator;
 
 public class XmlDataFormat extends DataFormat {
     private String originalData;
+    private String parsed;
     @Override
     public void parse(String data) {
-        this.originalData = data;
-        JSONObject jsonObject = new JSONObject();
-        try {
-            DocumentBuilderFactory factory = DocumentBuilderFactory.newInstance();
-            DocumentBuilder builder = factory.newDocumentBuilder();
-            InputSource inputSource = new InputSource(new StringReader(data));
-            Document document = builder.parse(inputSource);
-            Element root = document.getDocumentElement();
-            if (root.hasAttributes()) {
-                NamedNodeMap attributes = root.getAttributes();
-                int i = 0;
-                while (i < attributes.getLength()) {
-                    Node attribute = attributes.item(i);
-                    jsonObject.put("@" + attribute.getNodeName(), attribute.getNodeValue());
-                    i++;
-                }
-            }
-            hasChildNodes(jsonObject, root.hasChildNodes(), root.getChildNodes());
-        } catch (ParserConfigurationException | IOException | SAXException e) {
-             e.printStackTrace();
-        }
-        System.out.println(jsonObject);
-    }
-
-    private void hasChildNodes(JSONObject jsonObject, boolean b, NodeList childNodes) {
-        if (b) {
-            for (int i = 0; i < childNodes.getLength(); i++) {
-                Node child = childNodes.item(i);
-                if (child.getNodeType() == Node.ELEMENT_NODE) {
-                    if (child.hasChildNodes() && child.getFirstChild().getNodeType() == Node.TEXT_NODE && child.getLastChild().getNodeType() == Node.TEXT_NODE) {
-                        jsonObject.put(child.getNodeName(), child.getTextContent());
-                    } else {
-                        if (!jsonObject.has(child.getNodeName())) {
-                            jsonObject.put(child.getNodeName(), new JSONArray());
-                        }
-                        JSONArray jsonArray = jsonObject.getJSONArray(child.getNodeName());
-                        JSONObject childJSONObject = new JSONObject();
-                        if (child.hasAttributes()) {
-                            NamedNodeMap attributes = child.getAttributes();
-                            for (int j = 0; j < attributes.getLength(); j++) {
-                                Node attribute = attributes.item(j);
-                                childJSONObject.put("@" + attribute.getNodeName(), attribute.getNodeValue());
-                            }
-                        }
-                        parseChild(child, childJSONObject);
-                        jsonArray.put(childJSONObject);
-                    }
-                }
-            }
-        }
-    }
-
-    private void parseChild(Node node, JSONObject jsonObject) {
-        hasChildNodes(jsonObject, node.hasChildNodes(), node.getChildNodes());
-    }
-
-    @Override
-    public String render(String data) {
+        originalData = data;
         StringBuilder xmlBuilder = new StringBuilder();
         try {
             JSONObject json = new JSONObject(data);
-           xmlBuilder.append("<?xml version=\"1.0\" encoding=\"UTF-8\"?>\n");
             convertJsonObjectToXml(json, xmlBuilder);
         } catch (JSONException e) {
             e.printStackTrace();
@@ -90,19 +25,8 @@ public class XmlDataFormat extends DataFormat {
         if (xmlString.startsWith("\uFEFF")) { // check for BOM character
             xmlString = xmlString.substring(1);
         }
-        return xmlString;
+        parsed = xmlString;
     }
-
-    @Override
-    public String getOriginalData() {
-        return originalData;
-    }
-
-    @Override
-    public void accept(ValidatorVisitor visitor) {
-        visitor.visit(this);
-    }
-
 
     private void convertJsonObjectToXml(JSONObject json, StringBuilder xmlBuilder) throws JSONException {
         Iterator<String> keys = json.keys();
@@ -131,4 +55,21 @@ public class XmlDataFormat extends DataFormat {
         }
     }
 
+    @Override
+    public String render() {
+        return "<?xml version=\"1.0\" encoding=\"UTF-8\"?>" +
+                "<root>" +
+                parsed
+                + "</root>";
+    }
+
+    @Override
+    public String getOriginalData() {
+        return originalData;
+    }
+
+    @Override
+    public void accept(ValidatorVisitor visitor) {
+        visitor.visit(this);
+    }
 }

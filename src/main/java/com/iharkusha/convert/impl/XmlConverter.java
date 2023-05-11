@@ -23,7 +23,7 @@ public class XmlConverter extends Converter {
 
     @Override
     protected String renderData(DataFormat dataFormat) throws TransformerException {
-        return dataFormat.render(dataFormat.getOriginalData());
+        return dataFormat.render();
     }
 }
 

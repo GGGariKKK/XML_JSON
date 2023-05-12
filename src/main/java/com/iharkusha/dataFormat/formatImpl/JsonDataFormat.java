@@ -38,16 +38,24 @@ public class JsonDataFormat extends DataFormat {
             JsonArray jsonArray = new JsonArray();
             NodeList nodeList = root.getChildNodes();
             for (int i = 0; i < nodeList.getLength(); i++) {
+                try {
+                    Thread.sleep(200);
+                } catch (InterruptedException e){
+                    e.printStackTrace();
+                }
+                notifyObservers();
                 Node node = nodeList.item(i);
                 if (node instanceof Element element) {
                     JsonObject.Builder jsonBuilder = new JsonObject.Builder();
                     NamedNodeMap attributes = element.getAttributes();
                     for (int j = 0; j < attributes.getLength(); j++) {
+                        notifyObservers();
                         Node attribute = attributes.item(j);
                         jsonBuilder.add(attribute.getNodeName(), attribute.getNodeValue());
                     }
                     NodeList childNodes = element.getChildNodes();
                     for (int j = 0; j < childNodes.getLength(); j++) {
+                        notifyObservers();
                         Node childNode = childNodes.item(j);
                         if (childNode instanceof Element childElement) {
                             jsonBuilder.add(childElement.getTagName(), childElement.getTextContent());
@@ -70,5 +78,10 @@ public class JsonDataFormat extends DataFormat {
     @Override
     public void accept(DataFormatExtension extension) {
         extension.action(this);
+    }
+
+    @Override
+    public String getOriginalData() {
+        return originalData;
     }
 }

@@ -24,7 +24,7 @@ public class XmlDataFormat extends DataFormat {
         try {
             JSONObject json = new JSONObject(data);
             convertJsonObjectToXml(json, xmlBuilder);
-        } catch (JSONException e) {
+        } catch (JSONException | InterruptedException e) {
             e.printStackTrace();
         }
         String xmlString = xmlBuilder.toString();
@@ -34,9 +34,11 @@ public class XmlDataFormat extends DataFormat {
         parsed = xmlString;
     }
 
-    private void convertJsonObjectToXml(JSONObject json, StringBuilder xmlBuilder) throws JSONException {
+    private void convertJsonObjectToXml(JSONObject json, StringBuilder xmlBuilder) throws JSONException, InterruptedException {
         Iterator<String> keys = json.keys();
         while (keys.hasNext()) {
+            Thread.sleep(200);
+            notifyObservers();
             String key = keys.next();
             Object value = json.get(key);
             if (value instanceof JSONObject) {
@@ -48,6 +50,7 @@ public class XmlDataFormat extends DataFormat {
                 for (int i = 0; i < jsonArray.length(); i++) {
                     xmlBuilder.append("<").append(key).append(">");
                     Object arrayValue = jsonArray.get(i);
+                    notifyObservers();
                     if (arrayValue instanceof JSONObject) {
                         convertJsonObjectToXml((JSONObject) arrayValue, xmlBuilder);
                     } else {
@@ -72,5 +75,10 @@ public class XmlDataFormat extends DataFormat {
     @Override
     public void accept(DataFormatExtension extension) {
         extension.action(this);
+    }
+
+    @Override
+    public String getOriginalData() {
+        return originalData;
     }
 }

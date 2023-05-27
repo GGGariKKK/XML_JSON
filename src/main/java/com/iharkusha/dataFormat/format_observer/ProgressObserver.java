@@ -10,7 +10,8 @@ public class ProgressObserver implements Observer {
 
     @Override
     public void updateState() {
-        if (current < 98)
-            System.out.printf("***Progress: %s%% ***\n", Math.round(1.0 * ++current / totalAmount * 100));
+        int percentage = (int) Math.round(1.0 * ++current / totalAmount * 100);
+        if (percentage <= 100)
+            System.out.printf("***Progress: %s%% ***%n", percentage);
     }
 }

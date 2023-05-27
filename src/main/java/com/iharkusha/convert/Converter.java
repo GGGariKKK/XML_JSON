@@ -23,8 +23,12 @@ public abstract class Converter {
     }
 
     public final String convert(String data) throws ParserConfigurationException, IOException, SAXException, TransformerException {
-        Observer observer =
-                new ProgressObserver((int) Pattern.compile("(\".*?\":)|(<.*?>)").matcher(data).results().count());
+        Observer observer = new ProgressObserver(
+                (int) Pattern.compile("(\".*?\":)|(<.*?>)")
+                        .matcher(data)
+                        .results()
+                        .count()
+        );
         DataFormat dataFormat = dataFormatFactory.createDataFormat(List.of(observer));
         parseData(dataFormat, data);
         dataFormat.accept(dataFormatExtension);

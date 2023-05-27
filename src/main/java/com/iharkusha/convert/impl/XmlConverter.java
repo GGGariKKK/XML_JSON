@@ -23,6 +23,9 @@ public class XmlConverter extends Converter {
 
     @Override
     protected String renderData(DataFormat dataFormat) throws TransformerException {
+        if (dataFormat.getOriginalData().length()  > Integer.MAX_VALUE / 1.5) {
+            throw new TransformerException("Data length is too large to render it in one iteration. Please try again by smaller parts");
+        }
         return dataFormat.render();
     }
 }

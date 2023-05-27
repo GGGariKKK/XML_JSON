@@ -23,7 +23,7 @@ import java.util.Scanner;
 
 public class UserInterfaceFacade {
     private final Scanner scanner = new Scanner(System.in);
-    private final DataFormatExtension defaultFormatValidator = new FormatValidator();
+    private final DataFormatExtension defaultDataFormatExtension = new FormatValidator();
     private String inputFilePath;
     private String outputFilePath;
     private Charset outputEncoding;
@@ -45,13 +45,13 @@ public class UserInterfaceFacade {
 
     private void toXml() {
         choosePaths();
-        Converter converter = new JsonConverter(chooseXmlFactory(), defaultFormatValidator);
+        Converter converter = new JsonConverter(chooseXmlFactory(), defaultDataFormatExtension);
         convert(converter);
     }
 
     private void toJson() {
         choosePaths();
-        Converter converter = new XmlConverter(chooseJsonFactory(), defaultFormatValidator);
+        Converter converter = new XmlConverter(chooseJsonFactory(), defaultDataFormatExtension);
         convert(converter);
     }
 
